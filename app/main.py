@@ -1,14 +1,15 @@
+import app.models
 from fastapi import FastAPI
-
+from app.core.database import init_db
+from app.api.routes import users , admin
 
 app = FastAPI()
 
 
-@app.get("/")
-def root():
-    return {"message": "Hello, World!"}
+@app.on_event("startup")
+def on_startup():
+    init_db()
+    print('DB initialized')
 
-@app.get("/home")
-def home():
-    return {"message": "This is home, get out of here!"}
-
+app.include_router(admin.router)
+app.include_router(users.router)
