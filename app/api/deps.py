@@ -5,7 +5,7 @@ from jose import jwt , JWTError
 from sqlalchemy.orm import Session 
 from app.core.database import SessionLocal
 from app.core.config import settings
-from app.schemas.user import UserResponse
+from app.models.user import User
     
 def get_db():
     db = SessionLocal()
@@ -19,18 +19,21 @@ SessionDep = Annotated [ Session, Depends(get_db)]
 TokenDep = Annotated [str,Depends(oauth_bearer)]
 FormData = Annotated [OAuth2PasswordRequestForm,Depends()]
 
-def get_current_user(token:TokenDep):
+def get_current_user(token:TokenDep,db:SessionDep):
     cred_exception = HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,detail = "Could not validate user")
     try:
         payload = jwt.decode(token,settings.SECRET_KEY,settings.ALGORITHM)
         username:str = payload.get('sub')
         user_id:int = payload.get('id')
+
         if username is None or user_id is None:
             raise cred_exception
-        return {'username':username,'id':user_id}
+        
+        user = db.query(User).filter(User.id == user_id).first()
+        return user
     except JWTError:
         raise cred_exception
 
-CurrentUserDep = Annotated[UserResponse,Depends(get_current_user)]
+CurrentUserDep = Annotated[User,Depends(get_current_user)]
 
 
