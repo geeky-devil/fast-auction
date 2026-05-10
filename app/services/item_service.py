@@ -1,7 +1,7 @@
 from fastapi import HTTPException , status
 from sqlalchemy.orm import Session
 from app.schemas.item import *
-from app.models.item import Item
+from app.models import Item
 
 
 def get_all(user_id:int,db:Session):
