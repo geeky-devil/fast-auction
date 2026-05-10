@@ -2,27 +2,26 @@ from datetime import datetime
 from pydantic import BaseModel
 
 class ListingBase(BaseModel):
-    owner_id:int
-    top_bidder:str | None = None
+    seller_id:int
+    seller_name:str
     top_bidder_id:int | None = None
-    top_bid:int = 0
     minimun_bid:int
 
-class ListingCreate(ListingBase):
-    owner_id:int
+class ListingCreate(BaseModel):
+    seller_id:int
+    item_id:int
     minimun_bid:int
     created_at:datetime
     expires_at:datetime
 
-class ListingUpdate(ListingBase):
+class ListingUpdate(BaseModel):
     id:int
     top_bidder_id:int
     top_bid:int
 
-class ListingGet(ListingBase):
-    owner_id:int
+class ListingGet(BaseModel):
+    seller_name:str
     top_bidder:str
-    top_bid:int
     minimun_bid:int
     created_at:datetime
     expires_at:datetime

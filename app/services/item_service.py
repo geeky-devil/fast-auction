@@ -10,7 +10,7 @@ def get_all(user_id:int,db:Session):
 def get_item(user_id:int,item_id:int,db:Session):
     item = db.query(Item).filter(Item.owner_id == user_id).filter(Item.id == item_id).first()
     if item is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND , detail="item not found")
+        raise HTTPException(status_code = status.HTTP_404_NOT_FOUND , detail="item not found")
     return item
 
 def add_item(user_id:int,item:ItemCreate,db:Session):
