@@ -4,7 +4,7 @@ from app.api.deps import SessionDep , CurrentUserDep
 from app.schemas.item import ItemGet , ItemCreate
 import app.services.item_service as Service
 
-
+#TODO : add router dependency
 router = APIRouter(prefix="/items",tags=['items'])
 
 @router.get('/{item_id}')

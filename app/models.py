@@ -1,6 +1,7 @@
 from typing import List
 from sqlalchemy import Column, Integer, String , ForeignKey ,DateTime
 from sqlalchemy.orm import Mapped, Relationship
+from sqlalchemy.sql import func
 from app.core.database import Base
 
 class Listing(Base):
@@ -11,12 +12,12 @@ class Listing(Base):
     bidder_id = Column(Integer,ForeignKey("users.id"))
     item_id = Column(Integer,ForeignKey("items.id"),index= True)
     current_bid = Column(Integer,nullable=False)
-    created_at = Column(DateTime,nullable=False,index= True)
-    expires_at = Column(DateTime,nullable=False,index= True)
+    created_at = Column(DateTime(timezone=True),nullable=False,index= True)
+    expires_at = Column(DateTime(timezone=True),nullable=False,index= True)
     
     item = Relationship("Item",back_populates="listing")
-    seller = Relationship("User",back_populates="listing",foreign_keys=seller_id)
-    bidder = Relationship("User",back_populates="listing",foreign_keys=bidder_id)
+    seller = Relationship("User",back_populates="listing",foreign_keys=[seller_id])
+    bidder = Relationship("User",foreign_keys=[bidder_id])
     
 class Item(Base):
     __tablename__ = "items"
@@ -25,8 +26,8 @@ class Item(Base):
     name = Column(String,index=True , nullable=False)
     price = Column(Integer,nullable=False)
     owner_id = Column(Integer,ForeignKey("users.id"),nullable=False)
-    owner = Relationship("User",secondary="Listing",back_populates="items")
-    listing : Mapped[List[Listing]] = Relationship("Listing",back_populates="item")
+    owner = Relationship("User",back_populates="items")
+    listing : Mapped[List[Listing]] = Relationship(Listing,back_populates="item")
 
 class User(Base):
     __tablename__ = "users"
@@ -36,4 +37,5 @@ class User(Base):
     password = Column(String,nullable=False)
     email = Column(String)
     items : Mapped[List[Item]] = Relationship("Item",back_populates="owner")
-    listing : Mapped[List[Listing]] = Relationship("Listing",back_populates="seller")
+    listing  = Relationship(Listing,back_populates="seller",foreign_keys=[Listing.seller_id])
+    

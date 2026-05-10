@@ -1,28 +1,28 @@
 from datetime import datetime
 from pydantic import BaseModel
+from app.schemas.item import ItemGet
+from app.schemas.user import UserResponse
 
 class ListingBase(BaseModel):
     seller_id:int
     seller_name:str
     top_bidder_id:int | None = None
-    minimun_bid:int
+    current_bid:int
 
 class ListingCreate(BaseModel):
-    seller_id:int
     item_id:int
-    minimun_bid:int
-    created_at:datetime
-    expires_at:datetime
+    current_bid:int
 
 class ListingUpdate(BaseModel):
     id:int
     top_bidder_id:int
-    top_bid:int
+    current_bid:int
 
 class ListingGet(BaseModel):
-    seller_name:str
-    top_bidder:str
-    minimun_bid:int
+    seller:UserResponse
+    item:ItemGet
+    top_bidder:UserResponse |None = None
+    current_bid:int
     created_at:datetime
     expires_at:datetime
     model_config = {
