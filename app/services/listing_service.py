@@ -2,7 +2,7 @@ from datetime import datetime, timedelta, timezone
 from fastapi import HTTPException , status 
 from app.api.deps import CurrentUserDep
 from sqlalchemy.orm import Session
-from app.models import Listing
+from app.models import Listing , User, Item
 from app.schemas.listing import *
 
 def get_all(db:Session):
@@ -12,6 +12,9 @@ def get_listing(*,user:CurrentUserDep,db:Session):
     return []
 
 def create_listing(listing:ListingCreate,user:CurrentUserDep,db:Session):
+    item = db.query(Item).filter(Item.owner_id == user.id).filter(Item.id == listing.item_id).first()
+    if not item:
+        raise HTTPException(status_code= status.HTTP_404_NOT_FOUND , detail= "Requested item not available")
     new_listing = Listing(**listing.model_dump())
     new_listing.seller = user
     new_listing.created_at = datetime.now(timezone.utc)
