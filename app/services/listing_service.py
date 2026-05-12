@@ -8,6 +8,9 @@ from app.schemas.listing import *
 def get_all(db:Session):
     return db.query(Listing).all()
 
+def get_all_private(user:CurrentUserDep,db:Session):
+    return db.query(Listing).filter(Listing.seller_id == user.id).all()
+ 
 def get_listing(*,user:CurrentUserDep,db:Session):
     return []
 

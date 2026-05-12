@@ -7,12 +7,16 @@ import app.services.listing_service as Service
 router = APIRouter(prefix="/listing",tags=["listing"])
 
 #---/public routes/---#
-@router.get('/',response_model=List[ListingGet])
+@router.get('/all',response_model=List[ListingGet])
 def get_all_active_listings(db:SessionDep):
     return Service.get_all(db)
 
 
 #---/protected routes/---#
+@router.get('/',response_model= List[ListingGet])
+def get_listings_private(user:CurrentUserDep,db:SessionDep):
+    return Service.get_all_private(user,db)
+
 @router.post('/',response_model=ListingGet)
 def create_listing(new_listing:ListingCreate,user:CurrentUserDep,db:SessionDep):
     return Service.create_listing(new_listing,user,db)
