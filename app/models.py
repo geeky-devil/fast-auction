@@ -1,7 +1,6 @@
 from typing import List
 from sqlalchemy import Column, Integer, String , ForeignKey ,DateTime
 from sqlalchemy.orm import Mapped, Relationship
-from sqlalchemy.sql import func
 from app.core.database import Base
 
 class Listing(Base):
@@ -25,9 +24,9 @@ class Item(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String,index=True , nullable=False)
     price = Column(Integer,nullable=False)
-    owner_id = Column(Integer,ForeignKey("users.id"),nullable=False)
+    owner_id = Column(Integer,ForeignKey("users.id"),nullable=False) 
     owner = Relationship("User",back_populates="items")
-    listing : Mapped[List[Listing]] = Relationship(Listing,back_populates="item")
+    listing : Mapped[Listing] = Relationship(Listing,back_populates="item")
 
 class User(Base):
     __tablename__ = "users"
@@ -38,4 +37,3 @@ class User(Base):
     email = Column(String)
     items : Mapped[List[Item]] = Relationship("Item",back_populates="owner")
     listing  = Relationship(Listing,back_populates="seller",foreign_keys=[Listing.seller_id])
-    

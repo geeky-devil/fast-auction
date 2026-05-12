@@ -16,3 +16,7 @@ def get_all_active_listings(db:SessionDep):
 @router.post('/',response_model=ListingGet)
 def create_listing(new_listing:ListingCreate,user:CurrentUserDep,db:SessionDep):
     return Service.create_listing(new_listing,user,db)
+
+@router.post('/remove')
+def remove_all_listings(user:CurrentUserDep,db:SessionDep):
+    return Service.remove_all(user,db)
