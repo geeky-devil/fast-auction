@@ -17,6 +17,10 @@ def get_all_active_listings(db:SessionDep):
 def get_listings_private(user:CurrentUserDep,db:SessionDep):
     return Service.get_all_private(user,db)
 
+@router.post('/bid',response_model=ListingGet)
+def bid_on_listing(bid_req:ListingUpdate,user:CurrentUserDep,db:SessionDep):
+    return Service.try_bid(bid_req,user,db)
+
 @router.post('/',response_model=ListingGet)
 def create_listing(new_listing:ListingCreate,user:CurrentUserDep,db:SessionDep):
     return Service.create_listing(new_listing,user,db)

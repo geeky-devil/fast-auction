@@ -30,6 +30,22 @@ def create_listing(listing:ListingCreate,user:CurrentUserDep,db:Session):
     db.refresh(new_listing)
     return new_listing
 
+def try_bid(bid_req:ListingUpdate,user:CurrentUserDep,db:Session):
+    valid_listing = db.query(Listing).filter(Listing.id == bid_req.listing_id).first()
+    if not valid_listing:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND , detail="Listing not found")
+    
+    if user.id == valid_listing.seller_id:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN , detail="Stupid, dont bid on your item")
+        
+    if bid_req.bid_value <= valid_listing.current_bid:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST , detail="Bid value should be higher than displayed")
+    
+    valid_listing.current_bid = bid_req.bid_value
+    valid_listing.bidder = user
+    db.commit()
+    return valid_listing
+
 def remove_listing(listing_id,user:CurrentUserDep,db:Session):
     exists = db.query(Listing).filter(listing_id).first()
     if not exists:

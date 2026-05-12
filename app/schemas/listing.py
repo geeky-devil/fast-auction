@@ -14,14 +14,14 @@ class ListingCreate(BaseModel):
     current_bid:int
 
 class ListingUpdate(BaseModel):
-    id:int
-    top_bidder_id:int
-    current_bid:int
+    listing_id:int
+    bid_value:int
 
 class ListingGet(BaseModel):
+    id:int
     seller:UserResponse
     item:ItemGet
-    top_bidder:UserResponse |None = None
+    bidder:UserResponse |None = None
     current_bid:int
     created_at:datetime
     expires_at:datetime
