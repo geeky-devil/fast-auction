@@ -19,8 +19,9 @@ class ListingUpdate(BaseModel):
 
 class ListingGet(BaseModel):
     id:int
+    status:str
     seller:UserResponse
-    item:ItemGet
+    item:ItemGet | None
     bidder:UserResponse |None = None
     current_bid:int
     created_at:datetime

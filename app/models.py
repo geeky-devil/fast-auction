@@ -1,7 +1,14 @@
+import enum
 from typing import List
-from sqlalchemy import Column, Integer, String , ForeignKey ,DateTime
+from sqlalchemy import Column, Integer, String , ForeignKey ,DateTime , Enum
 from sqlalchemy.orm import Mapped, Relationship
 from app.core.database import Base
+
+class ListingStatus(enum.Enum):
+    ACTIVE = "active"
+    EXPIRED = "expired"
+    CANCELLED ="cancelled"
+    ON_HOLD = "on_hold"
 
 class Listing(Base):
     __tablename__ = "listings"
@@ -13,6 +20,7 @@ class Listing(Base):
     current_bid = Column(Integer,nullable=False)
     created_at = Column(DateTime(timezone=True),nullable=False,index= True)
     expires_at = Column(DateTime(timezone=True),nullable=False,index= True)
+    status:Mapped[ListingStatus] = Column(Enum(ListingStatus),default= ListingStatus.ACTIVE)
     
     item = Relationship("Item",back_populates="listing")
     seller = Relationship("User",back_populates="listing",foreign_keys=[seller_id])

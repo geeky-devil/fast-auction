@@ -1,12 +1,19 @@
 from fastapi import FastAPI
+from contextlib import asynccontextmanager
+from app.internal.scheduler import ListingScheduler
 from app.core.database import init_db
 from app.api.routes import users, admin, auth , items , listings
 
-app = FastAPI()
+scheduler = ListingScheduler()
 
-@app.on_event("startup")
-def on_startup():
-    init_db()
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    init_db()    
+    scheduler.start()
+    yield
+    scheduler.shutdown()
+
+app = FastAPI(lifespan=lifespan)
 
 app.include_router(admin.router)
 app.include_router(auth.router)
