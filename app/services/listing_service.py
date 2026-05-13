@@ -1,9 +1,9 @@
 from datetime import datetime, timedelta, timezone
 from app.core.config import settings
 from fastapi import HTTPException , status 
-from app.api.deps import CurrentUserDep
+from app.core.deps import CurrentUserDep
 from sqlalchemy.orm import Session
-from app.models import Listing , User, Item ,ListingStatus
+from app.core.models import Listing , User, Item ,ListingStatus
 from app.schemas.listing import *
 
 def get_all(db:Session):

@@ -1,6 +1,6 @@
 from fastapi import  APIRouter , HTTPException , status
 from typing import List
-from app.api.deps import SessionDep , CurrentUserDep
+from app.core.deps import SessionDep , CurrentUserDep
 from app.schemas.item import ItemGet , ItemCreate
 import app.services.item_service as Service
 

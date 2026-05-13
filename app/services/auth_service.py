@@ -1,6 +1,6 @@
-from app.models import User
+from app.core.models import User
 from fastapi import HTTPException, status
-from app.api.deps import SessionDep , FormData , TokenDep
+from app.core.deps import SessionDep , FormData , TokenDep
 from app.core.security import verify_password
 
 

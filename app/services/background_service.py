@@ -2,7 +2,7 @@ from typing import List
 from datetime import datetime , timezone
 from sqlalchemy.orm import Session
 from app.core.helper import DateTimeUTCNow
-from app.models import Listing , ListingStatus
+from app.core.models import Listing , ListingStatus
 
 
 def resolve_listing(db:Session):

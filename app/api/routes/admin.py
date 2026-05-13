@@ -1,6 +1,6 @@
 from fastapi import APIRouter
-from app.api.deps import SessionDep
-from app.models import User
+from app.core.deps import SessionDep
+from app.core.models import User
 router = APIRouter(prefix='/admin',tags = ['admin'])
 
 @router.post('/purge_user')

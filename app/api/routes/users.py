@@ -1,5 +1,5 @@
 from fastapi import Depends, APIRouter , HTTPException , status
-from app.api.deps import SessionDep , CurrentUserDep
+from app.core.deps import SessionDep , CurrentUserDep
 import app.services.user_service as Service
 from app.schemas.user import *
 

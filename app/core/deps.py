@@ -5,7 +5,7 @@ from jose import jwt , JWTError
 from sqlalchemy.orm import Session 
 from app.core.database import SessionLocal
 from app.core.config import settings
-from app.models import User
+from app.core.models import User
     
 def get_db():
     db = SessionLocal()
@@ -35,5 +35,3 @@ def get_current_user(token:TokenDep,db:SessionDep):
         raise cred_exception
 
 CurrentUserDep = Annotated[User,Depends(get_current_user)]
-
-

@@ -2,7 +2,7 @@ import app.services.auth_service as AuthService
 from fastapi import APIRouter , HTTPException , status
 from app.core.security import create_access_token
 from app.schemas.auth import Token
-from app.api.deps import SessionDep , FormData
+from app.core.deps import SessionDep , FormData
 
 
 router = APIRouter(prefix='/auth',tags= ['auth'])
