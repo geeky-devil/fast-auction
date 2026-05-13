@@ -36,6 +36,9 @@ def try_bid(bid_req:ListingUpdate,user:CurrentUserDep,db:Session):
     if not valid_listing:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND , detail="Listing not found")
     
+    if valid_listing.status == ListingStatus.EXPIRED:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN , detail="Listing expired")
+    
     if user.id == valid_listing.seller_id:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN , detail="Stupid, dont bid on your item")
         
