@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from app.internal.scheduler import ListingScheduler
 from app.core.database import init_db
-from app.api.routes import users, admin, auth , items , listings
+from app.routes import users,admin, auth, items, listings
 
 scheduler = ListingScheduler()
 
