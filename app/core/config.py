@@ -11,5 +11,8 @@ class Settings(BaseSettings):
     DATABASE_URL: str
     ALGORITHM:str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES:int = 60
+    LISTING_EXPIRE_SECONDS:int = 60 * 2
+    LISTING_RESOLVE_SECONDS:int = 3
+    LISTING_CLEAN_UP_SECONDS:int = 60 * 4
 
 settings = Settings() 

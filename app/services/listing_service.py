@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta, timezone
+from app.core.config import settings
 from fastapi import HTTPException , status 
 from app.api.deps import CurrentUserDep
 from sqlalchemy.orm import Session
@@ -24,7 +25,7 @@ def create_listing(listing:ListingCreate,user:CurrentUserDep,db:Session):
     new_listing = Listing(**listing.model_dump())
     new_listing.seller = user
     new_listing.created_at = datetime.now(timezone.utc)
-    new_listing.expires_at = datetime.now(timezone.utc) + timedelta(seconds= 60) # pull delta from config
+    new_listing.expires_at = datetime.now(timezone.utc) + timedelta(seconds= settings.LISTING_EXPIRE_SECONDS)
     db.add(new_listing)
     db.commit()
     db.refresh(new_listing)
