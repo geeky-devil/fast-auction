@@ -1,11 +1,12 @@
 from fastapi import HTTPException , status
 from sqlalchemy.orm import Session
+from app.core.deps import CurrentUserDep
 from app.schemas.item import *
 from app.core.models import Item
 
 
-def get_all(user_id:int,db:Session):
-    return db.query(Item).filter(Item.owner_id == user_id).all()
+def get_all_items(user:CurrentUserDep,db:Session):
+    return user.items
 
 def get_item(user_id:int,item_id:int,db:Session):
     item = db.query(Item).filter(Item.owner_id == user_id).filter(Item.id == item_id).first()

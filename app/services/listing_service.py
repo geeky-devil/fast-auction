@@ -10,7 +10,7 @@ def get_all(db:Session):
     return db.query(Listing).all()
 
 def get_all_private(user:CurrentUserDep,db:Session):
-    return db.query(Listing).filter(Listing.seller_id == user.id).all()
+    return user.listing
  
 def get_listing(*,user:CurrentUserDep,db:Session):
     return []
@@ -55,7 +55,9 @@ def remove_listing(listing_id,user:CurrentUserDep,db:Session):
     if not exists:
         raise HTTPException(status_code=status.HTTP_204_NO_CONTENT , detail= "Listing does not exist!")
     exists.item = None
-    db.delete(exists)
+    exists.bidder = None
+    exists.status = ListingStatus.CANCELLED
+    db.commit()
     return {'success':"listing deleted"}
 
 

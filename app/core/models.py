@@ -44,4 +44,4 @@ class User(Base):
     password = Column(String,nullable=False)
     email = Column(String)
     items : Mapped[List[Item]] = Relationship("Item",back_populates="owner")
-    listing  = Relationship(Listing,back_populates="seller",foreign_keys=[Listing.seller_id])
+    listing :Mapped[List[Listing]] = Relationship(Listing,back_populates="seller",foreign_keys=[Listing.seller_id])

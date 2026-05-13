@@ -13,7 +13,7 @@ async def get_item(item_id:int,user:CurrentUserDep,db:SessionDep):
     
 @router.get('/',response_model= List[ItemGet])
 async def get_all(user:CurrentUserDep,db:SessionDep):
-    return Service.get_all(user.id,db)
+    return Service.get_all_items(user,db)
 
 "@Post"
 
