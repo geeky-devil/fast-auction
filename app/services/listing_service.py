@@ -24,7 +24,7 @@ def create_listing(listing:ListingCreate,user:CurrentUserDep,db:Session):
     new_listing = Listing(**listing.model_dump())
     new_listing.seller = user
     new_listing.created_at = datetime.now(timezone.utc)
-    new_listing.expires_at = datetime.now(timezone.utc) + timedelta(seconds= 10) # pull delta from config
+    new_listing.expires_at = datetime.now(timezone.utc) + timedelta(seconds= 60) # pull delta from config
     db.add(new_listing)
     db.commit()
     db.refresh(new_listing)
